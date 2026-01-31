@@ -1,0 +1,40 @@
+{% extends 'records/base.html' %}
+
+{% block title %}質問一覧{% endblock %}
+
+{% block content %}
+<h2>質問一覧</h2>
+
+<p><a href="{% url 'records:question_create' %}">＋ 新規登録</a></p>
+
+{% if questions %}
+<table border="1" style="border-collapse: collapse; width: 100%;">
+    <thead>
+        <tr>
+            <th>日付</th>
+            <th>ハッカソン</th>
+            <th>コース</th>
+            <th>タグ</th>
+            <th>質問内容</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for question in questions %}
+        <tr>
+            <td>{{ question.question_date }}</td>
+            <td>{{ question.hackathon_name }}</td>
+            <td>{{ question.course.name }}</td>
+            <td>
+                {% for tag in question.tags.all %}
+                    <span>{{ tag.name }}</span>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+            <td>{{ question.question_content|truncatechars:50 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>質問がまだ登録されていません。</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'records/base.html' %}
+
+{% block title %}質問登録{% endblock %}
+
+{% block content %}
+<h2>質問登録</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div style="margin-bottom: 15px;">
+        <label>ハッカソン期間</label><br>
+        {{ form.hackathon_name }}
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <label>質問日</label><br>
+        {{ form.question_date }}
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <label>コース</label><br>
+        {{ form.course }}
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <label>記録者</label><br>
+        {{ form.mentor }}
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <label>タグ</label><br>
+        {{ form.tags }}
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <label>質問内容</label><br>
+        {{ form.question_content }}
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <label>回答内容</label><br>
+        {{ form.answer_content }}
+    </div>
+    
+    <button type="submit">登録</button>
+</form>
+
+<p style="margin-top: 20px;"><a href="{% url 'records:question_list' %}">← 一覧に戻る</a></p>
+{% endblock %}
