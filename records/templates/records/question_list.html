@@ -7,7 +7,49 @@
 
 <p><a href="{% url 'records:question_create' %}">＋ 新規登録</a></p>
 
+<!-- 検索フォーム -->
+<form method="get" style="background: #f5f5f5; padding: 15px; margin-bottom: 20px;">
+    <div style="display: flex; gat: 15px; flex-wrap: wrap;">
+        <div>
+            <label>キーワード</label><br>
+            <input type="text" name="keyword" value="{{ request.GET.keyword }}" placeholder="質問・回答を検索">
+        </div>
+        <div>
+            <label>コース</label><br>
+            <select name="course">
+                <option value="">すべて</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}" {% if request.GET.course == course.id|stringformat:"d" %}selected{% endif %}>{{ course.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>タグ</label><br>
+            <select name="tag">
+                <option value="">すべて</option>
+                {% for tag in tags %}
+                    <option value="{{ tag.id }}" {% if request.GET.tag == tag.id|stringformat:"d" %}selected{% endif %}>{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>ハッカソン期間</label><br>
+            <select name="hackathon">
+                <option value="">すべて</option>
+                {% for hackathon in hackathons %}
+                    <option value="{{ hackathon }}" {% if request.GET.hackathon == hackathon %}selected{% endif %}>{{ hackathon }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="align-self: flex-end;">
+            <button type="submit">検索</button>
+            <a href="{% url 'records:question_list' %}" style="margin-left: 10px;">リセット</a>
+        </div>
+    </div>
+</form>
+
 {% if questions %}
+<p>{{ questions|length }}件の質問が見つかりました。</p>
 <table border="1" style="border-collapse: collapse; width: 100%;">
     <thead>
         <tr>
@@ -16,6 +58,7 @@
             <th>コース</th>
             <th>タグ</th>
             <th>質問内容</th>
+            <th>操作</th>
         </tr>
     </thead>
     <tbody>
@@ -30,6 +73,10 @@
                 {% endfor %}
             </td>
             <td>{{ question.question_content|truncatechars:50 }}</td>
+            <td>
+                <a href="{% url 'records:question_edit' question.pk %}">編集</a>
+                <a href="{% url 'records:question_delete' question.pk %}" style="color: red; margin-left: 10px;">削除</a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
